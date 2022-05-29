@@ -1,8 +1,10 @@
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
-import { FormGroup, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 
 import React, { useState } from 'react';
+
 import { FlagMessage } from '../FlagMessage';
+import { FormGroupStyled } from './styles';
 
 export const Register = () => {
   const [values, setValues] = useState({
@@ -42,7 +44,14 @@ export const Register = () => {
         ) {
           setStatus({
             type: 'success',
-            message: 'Passed',
+            message: 'The reduction passed the test',
+            input: '',
+          });
+        } else {
+          setStatus({
+            type: 'error 2',
+            message: 'The reduction did not pass the test',
+            input: '',
           });
         }
       }
@@ -54,8 +63,10 @@ export const Register = () => {
   console.log(status.input);
 
   return (
-    <FormGroup>
-      {values.inputValue === 0 || values.outputValue === 0 ? (
+    <FormGroupStyled>
+      {values.inputValue === 0 ||
+      values.outputValue === 0 ||
+      values.reductionValue == 0 ? (
         <FlagMessage success={false}>
           Don`t forget the value of the reduction
         </FlagMessage>
@@ -98,15 +109,20 @@ export const Register = () => {
       />
       {status.type === 'error' && (
         <FlagMessage icon>
-          <SettingsSharpIcon />
+          <SettingsSharpIcon fontSize="large" />
         </FlagMessage>
       )}
-      {typeof result === 'number' && !isNaN(result) ? (
-        <FlagMessage number={true}>{result.toFixed(2)}</FlagMessage>
+      {status.type == 'success' &&
+      typeof result === 'number' &&
+      !isNaN(result) ? (
+        <FlagMessage number={true}>Result: {result.toFixed(2)}</FlagMessage>
       ) : null}
       {status.type === 'success' && (
         <FlagMessage success>{status.message}</FlagMessage>
       )}
-    </FormGroup>
+      {values.reductionValue !== 0 && status.type === 'error 2' ? (
+        <FlagMessage success={false}>{status.message}</FlagMessage>
+      ) : null}
+    </FormGroupStyled>
   );
 };

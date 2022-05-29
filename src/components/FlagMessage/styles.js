@@ -2,14 +2,12 @@ import styled, { css } from 'styled-components';
 
 const stylesSuccess = (success) => css`
   color:${success ? 'green' : 'red'};
-  font-size:1.2rem;
-  font-weight:bold ;
+  font-size:1.6rem;
   `;
 
 const stylesNumber = (number) => css`
   color:${number && 'black'};
   font-size:${number && '1.2rem'} ;
-  font-weight:${number && 'bold'} ;
 ;`;
 
 const stylesIcon = (icon) => css`
@@ -19,6 +17,9 @@ const stylesIcon = (icon) => css`
 export const Container = styled.p`
 ${({ success, number, icon }) => css`
   text-align: center;
+  font-family: 'Roboto';
+  font-weight: 800;
+  margin: 1rem 0;
   ${stylesSuccess(success)}
   ${stylesNumber(number)}
   ${stylesIcon(icon)}`}`;

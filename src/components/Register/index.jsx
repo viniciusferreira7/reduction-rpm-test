@@ -1,10 +1,9 @@
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
-import { TextField } from '@mui/material';
 
 import React, { useState } from 'react';
 
 import { FlagMessage } from '../FlagMessage';
-import { FormGroupStyled } from './styles';
+import { FormGroupStyled, TextFieldStyled } from './styles';
 
 export const Register = () => {
   const [values, setValues] = useState({
@@ -64,6 +63,7 @@ export const Register = () => {
 
   return (
     <FormGroupStyled>
+      <h1>Reduction rpm test</h1>
       {values.inputValue === 0 ||
       values.outputValue === 0 ||
       values.reductionValue == 0 ? (
@@ -74,36 +74,33 @@ export const Register = () => {
       {status.input === 'reductionValue' ? (
         <FlagMessage success={false}>{status.message}</FlagMessage>
       ) : null}
-      <TextField
-        id="reduction"
+      <TextFieldStyled
         name="reductionValue"
         type="text"
         variant="outlined"
-        label="Reduction"
+        placeholder="Reduction"
         margin="dense"
         onChange={handleChange}
       />
       {status.input === 'inputValue' ? (
         <FlagMessage success={false}>{status.message}</FlagMessage>
       ) : null}
-      <TextField
-        id="inputValue"
+      <TextFieldStyled
         name="inputValue"
         type="text"
         variant="outlined"
-        label="Input value"
+        placeholder="Input value"
         margin="dense"
         onChange={handleChange}
       />
       {status.input === 'outputValue' ? (
         <FlagMessage success={false}>{status.message}</FlagMessage>
       ) : null}
-      <TextField
-        id="outputValue"
+      <TextFieldStyled
         name="outputValue"
         type="text"
         variant="outlined"
-        label="Output value"
+        placeholder="Output value"
         margin="dense"
         onChange={handleChange}
       />

@@ -15,6 +15,6 @@ html{
 }
 
 body {
-    background: #15158a;
+    background: #01011a;
     padding: 0 1%;
   }`;

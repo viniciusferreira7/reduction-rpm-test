@@ -1,17 +1,18 @@
 import styled, { css } from 'styled-components';
 
 const stylesSuccess = (success) => css`
-  color:${success ? 'green' : 'red'};
+  color:${success ? '#115207' : '#ab0c17'};
   font-size:1.6rem;
   `;
 
 const stylesNumber = (number) => css`
-  color:${number && 'black'};
-  font-size:${number && '1.2rem'} ;
+  color:${number && '#01011a'};
+  font-size:${number && '1.6rem'} ;
+  ${number && 'text-decoration: underline;'}
 ;`;
 
 const stylesIcon = (icon) => css`
-  color:${icon && '#0c0959'};
+  color:${icon && '#01011a'};
 ;`;
 
 export const Container = styled.p`
@@ -19,7 +20,7 @@ ${({ success, number, icon }) => css`
   text-align: center;
   font-family: 'Roboto';
   font-weight: 800;
-  margin: 1rem 0;
+  margin: 0 0 1.4rem 0;
   ${stylesSuccess(success)}
   ${stylesNumber(number)}
   ${stylesIcon(icon)}`}`;

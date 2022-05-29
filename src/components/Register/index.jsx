@@ -1,3 +1,4 @@
+import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
 import { FormGroup, TextField } from '@mui/material';
 
 import React, { useState } from 'react';
@@ -5,14 +6,15 @@ import { FlagMessage } from '../FlagMessage';
 
 export const Register = () => {
   const [values, setValues] = useState({
-    entryValue: null,
-    firstValue: null,
-    secondValue: null,
+    reductionValue: 0,
+    inputValue: 0,
+    outputValue: 0,
   });
 
   const [status, setStatus] = useState({
     type: '',
     message: '',
+    input: '',
   });
 
   const [result, setResult] = useState(null);
@@ -24,17 +26,19 @@ export const Register = () => {
       setStatus({
         type: 'error',
         message: 'Not a number',
+        input: e.target.name,
       });
     } else {
       setStatus({
         type: '',
         message: '',
+        input: '',
       });
-      if (values.firstValue / values.secondValue !== Infinity) {
-        setResult(values.firstValue / values.secondValue);
+      if (values.inputValue / values.outputValue !== Infinity) {
+        setResult(values.inputValue / values.outputValue);
         if (
-          values.entryValue * 0.05 > result &&
-          values.entryValue * -0.05 < result
+          values.reductionValue * 0.05 > result &&
+          values.reductionValue * -0.05 < result
         ) {
           setStatus({
             type: 'success',
@@ -45,37 +49,64 @@ export const Register = () => {
     }
   };
 
+  console.log(typeof result);
+  console.log(values.inputValue);
+  console.log(status.input);
+
   return (
     <FormGroup>
-      {status.type === 'error' && <FlagMessage>{status.message}</FlagMessage>}
+      {values.inputValue === 0 || values.outputValue === 0 ? (
+        <FlagMessage success={false}>
+          Don`t forget the value of the reduction
+        </FlagMessage>
+      ) : null}
+      {status.input === 'reductionValue' ? (
+        <FlagMessage success={false}>{status.message}</FlagMessage>
+      ) : null}
       <TextField
-        id="entry"
-        name="entryValue"
+        id="reduction"
+        name="reductionValue"
         type="text"
         variant="outlined"
-        label="Entry Value"
+        label="Reduction"
         margin="dense"
         onChange={handleChange}
       />
+      {status.input === 'inputValue' ? (
+        <FlagMessage success={false}>{status.message}</FlagMessage>
+      ) : null}
       <TextField
-        id="firstValue"
-        name="firstValue"
+        id="inputValue"
+        name="inputValue"
         type="text"
         variant="outlined"
-        label="First Value"
+        label="Input value"
         margin="dense"
         onChange={handleChange}
       />
+      {status.input === 'outputValue' ? (
+        <FlagMessage success={false}>{status.message}</FlagMessage>
+      ) : null}
       <TextField
-        id="secondValue"
-        name="secondValue"
+        id="outputValue"
+        name="outputValue"
         type="text"
         variant="outlined"
-        label="Second Value"
+        label="Output value"
         margin="dense"
         onChange={handleChange}
       />
-      {status.type === 'success' && <FlagMessage>{status.message}</FlagMessage>}
+      {status.type === 'error' && (
+        <FlagMessage icon>
+          <SettingsSharpIcon />
+        </FlagMessage>
+      )}
+      {typeof result === 'number' && !isNaN(result) ? (
+        <FlagMessage number={true}>{result.toFixed(2)}</FlagMessage>
+      ) : null}
+      {status.type === 'success' && (
+        <FlagMessage success>{status.message}</FlagMessage>
+      )}
     </FormGroup>
   );
 };

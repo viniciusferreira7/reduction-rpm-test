@@ -1,81 +1,47 @@
-import { Button, TextField } from '@mui/material';
-import { Field, Form, Formik } from 'formik';
+import { FormGroup, TextField } from '@mui/material';
 
-import React from 'react';
-import * as Yup from 'yup';
-import { FlagMessage } from '../FlagMessage';
-
-import * as Styled from './styles';
+import React, { useState } from 'react';
 
 export const Register = () => {
-  const validate = Yup.object().shape({
-    entry: Yup.number('Its required a number').required(
-      'You need to fill in the input field',
-    ),
-    firstValue: Yup.number('Its required a number').required(
-      'It is necessary to fill in the first value',
-    ),
-    secondValue: Yup.number('Its required a number').required(
-      'It is necessary to fill in the second value',
-    ),
+  const [values, setValues] = useState({
+    entryValue: '',
+    firstValue: '',
+    secondValue: '',
   });
 
-  // const onSubmit = (values, actions) => {
-  //   console.log(values, actions);
-  // };
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
 
   return (
-    <Styled.Container>
-      <Formik
-        initialValues={{
-          entry: '',
-          firstValue: '',
-          secondValue: '',
-        }}
-        validationSchema={validate}
-        onSubmit={(values) => console.log(values)}
-      >
-        {({ errors }) => (
-          <Form>
-            {errors.entry && <FlagMessage>{errors.entry}</FlagMessage>}
-            <Field
-              component={TextField}
-              id="entry"
-              name="entry"
-              type="text"
-              variant="outlined"
-              label="Entry"
-              margin="dense"
-            />
-
-            {errors.firstValue && (
-              <FlagMessage>{errors.firstValue}</FlagMessage>
-            )}
-            <Field
-              component={TextField}
-              id="firstValue"
-              name="firstValue"
-              type="text"
-              variant="outlined"
-              label="First Value"
-            />
-            {errors.secondValue && (
-              <FlagMessage>{errors.secondValue}</FlagMessage>
-            )}
-            <Field
-              component={TextField}
-              id="secondValue"
-              name="secondValue"
-              type="text"
-              variant="outlined"
-              label="Second Value"
-            />
-            <Button type="submit" variant="outlined">
-              Validate
-            </Button>
-          </Form>
-        )}
-      </Formik>
-    </Styled.Container>
+    <FormGroup>
+      <TextField
+        id="entry"
+        name="entryValue"
+        type="text"
+        variant="standard"
+        label="Entry Value"
+        margin="dense"
+        onChange={handleChange}
+      />
+      <TextField
+        id="firstValue"
+        name="firstValue"
+        type="text"
+        variant="outlined"
+        label="First Value"
+        margin="dense"
+        onChange={handleChange}
+      />
+      <TextField
+        id="secondValue"
+        name="secondValue"
+        type="text"
+        variant="outlined"
+        label="Second Value"
+        margin="dense"
+        onChange={handleChange}
+      />
+    </FormGroup>
   );
 };

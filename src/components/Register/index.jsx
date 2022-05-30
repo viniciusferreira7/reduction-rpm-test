@@ -128,7 +128,7 @@ export const Register = () => {
         margin="dense"
         onChange={handleChange}
       />
-      {status.type === 'error' && (
+      {error.type === 'error' && (
         <FlagMessage icon>
           <SettingsSharpIcon fontSize="large" />
         </FlagMessage>

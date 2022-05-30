@@ -18,6 +18,12 @@ export const Register = () => {
     input: '',
   });
 
+  const [error, setError] = useState({
+    type: '',
+    message: '',
+    input: '',
+  });
+
   const [result, setResult] = useState(null);
 
   const isNumber = (number) => {
@@ -62,16 +68,16 @@ export const Register = () => {
     });
 
     if (!isNumber(e.target.value)) {
-      setStatus({
+      setError({
         type: 'error',
         message: 'Not a number',
         input: e.target.name,
       });
     } else {
-      setStatus({
+      setError({
         type: '',
         message: '',
-        input: '',
+        input: e.target.name,
       });
     }
   };
@@ -86,8 +92,10 @@ export const Register = () => {
           Don`t forget the value of the reduction
         </FlagMessage>
       ) : null}
-      {status.input === 'reductionValue' ? (
-        <FlagMessage success={false}>{status.message}</FlagMessage>
+      {error.type === 'error' &&
+      error.input === 'reductionValue' &&
+      values.reductionValue !== '' ? (
+        <FlagMessage success={false}>{error.message}</FlagMessage>
       ) : null}
       <TextFieldStyled
         name="reductionValue"
@@ -98,8 +106,8 @@ export const Register = () => {
         margin="dense"
         onChange={handleChange}
       />
-      {status.input === 'inputValue' ? (
-        <FlagMessage success={false}>{status.message}</FlagMessage>
+      {error.type === 'error' && error.input === 'inputValue' ? (
+        <FlagMessage success={false}>{error.message}</FlagMessage>
       ) : null}
       <TextFieldStyled
         name="inputValue"
@@ -109,8 +117,8 @@ export const Register = () => {
         margin="dense"
         onChange={handleChange}
       />
-      {status.input === 'outputValue' && values.inputValue !== String ? (
-        <FlagMessage success={false}>{status.message}</FlagMessage>
+      {error.type === 'error' && error.input === 'outputValue' ? (
+        <FlagMessage success={false}>{error.message}</FlagMessage>
       ) : null}
       <TextFieldStyled
         name="outputValue"
@@ -126,13 +134,13 @@ export const Register = () => {
         </FlagMessage>
       )}
 
-      {status.type === 'success' && (
+      {!isNaN(result) && status.type === 'success' ? (
         <>
           <FlagMessage success>{status.message}</FlagMessage>
           <FlagMessage number={true}>Result: {result}</FlagMessage>{' '}
         </>
-      )}
-      {parseFloat(values.reductionValue) !== 0 && status.type === 'error 2' ? (
+      ) : null}
+      {!isNaN(result) && status.type === 'error 2' ? (
         <>
           <FlagMessage success={false}>{status.message}</FlagMessage>
           <FlagMessage number={true}>Result: {result}</FlagMessage>{' '}

@@ -1,15 +1,15 @@
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { FlagMessage } from '../FlagMessage';
 import { FormGroupStyled, TextFieldStyled } from './styles';
 
 export const Register = () => {
   const [values, setValues] = useState({
-    reductionValue: 0,
-    inputValue: 0,
-    outputValue: 0,
+    reductionValue: '',
+    inputValue: '',
+    outputValue: '',
   });
 
   const [status, setStatus] = useState({
@@ -20,10 +20,48 @@ export const Register = () => {
 
   const [result, setResult] = useState(null);
 
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: Number(e.target.value) });
+  const isNumber = (number) => {
+    return !isNaN(parseFloat(number)) && isFinite(number);
+  };
 
-    if (isNaN(values[e.target.name])) {
+  const soma = (inputValue, outputValue) => {
+    return parseFloat(inputValue) / parseFloat(outputValue);
+  };
+
+  const percentage = (value, percentage) => {
+    return parseFloat(value) * percentage + parseFloat(value);
+  };
+
+  useEffect(() => {
+    setResult(soma(values.inputValue, values.outputValue).toFixed(3));
+  }, [values, status]);
+
+  useEffect(() => {
+    if (
+      percentage(values.reductionValue, 0.05) >= result &&
+      percentage(values.reductionValue, -0.05) <= result
+    ) {
+      setStatus({
+        type: 'success',
+        message: 'The reduction passed the test',
+        input: '',
+      });
+    } else {
+      setStatus({
+        type: 'error 2',
+        message: 'The reduction did not pass the test',
+        input: '',
+      });
+    }
+  }, [values, result]);
+
+  const handleChange = (e) => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value,
+    });
+
+    if (!isNumber(e.target.value)) {
       setStatus({
         type: 'error',
         message: 'Not a number',
@@ -35,31 +73,8 @@ export const Register = () => {
         message: '',
         input: '',
       });
-      if (values.inputValue / values.outputValue !== Infinity) {
-        setResult(values.inputValue / values.outputValue);
-        if (
-          values.reductionValue * 0.05 > result &&
-          values.reductionValue * -0.05 < result
-        ) {
-          setStatus({
-            type: 'success',
-            message: 'The reduction passed the test',
-            input: '',
-          });
-        } else {
-          setStatus({
-            type: 'error 2',
-            message: 'The reduction did not pass the test',
-            input: '',
-          });
-        }
-      }
     }
   };
-
-  console.log(typeof result);
-  console.log(values.inputValue);
-  console.log(status.input);
 
   return (
     <FormGroupStyled>
@@ -79,6 +94,7 @@ export const Register = () => {
         type="text"
         variant="outlined"
         placeholder="Reduction"
+        value={values.reductionValue}
         margin="dense"
         onChange={handleChange}
       />
@@ -93,7 +109,7 @@ export const Register = () => {
         margin="dense"
         onChange={handleChange}
       />
-      {status.input === 'outputValue' ? (
+      {status.input === 'outputValue' && values.inputValue !== String ? (
         <FlagMessage success={false}>{status.message}</FlagMessage>
       ) : null}
       <TextFieldStyled
@@ -109,17 +125,20 @@ export const Register = () => {
           <SettingsSharpIcon fontSize="large" />
         </FlagMessage>
       )}
-      {status.type == 'success' &&
-      typeof result === 'number' &&
-      !isNaN(result) ? (
-        <FlagMessage number={true}>Result: {result.toFixed(2)}</FlagMessage>
-      ) : null}
+
       {status.type === 'success' && (
-        <FlagMessage success>{status.message}</FlagMessage>
+        <>
+          <FlagMessage success>{status.message}</FlagMessage>
+          <FlagMessage number={true}>Result: {result}</FlagMessage>{' '}
+        </>
       )}
-      {values.reductionValue !== 0 && status.type === 'error 2' ? (
-        <FlagMessage success={false}>{status.message}</FlagMessage>
+      {parseFloat(values.reductionValue) !== 0 && status.type === 'error 2' ? (
+        <>
+          <FlagMessage success={false}>{status.message}</FlagMessage>
+          <FlagMessage number={true}>Result: {result}</FlagMessage>{' '}
+        </>
       ) : null}
+      <FlagMessage creators={true}>Created by Vinicius and Cleber</FlagMessage>
     </FormGroupStyled>
   );
 };

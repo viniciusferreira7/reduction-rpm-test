@@ -7,9 +7,15 @@ export const FlagMessage = ({
   success = false,
   icon = false,
   number = false,
+  creators = false,
 }) => {
   return (
-    <Styled.Container success={success} icon={icon} number={number}>
+    <Styled.Container
+      success={success}
+      icon={icon}
+      number={number}
+      creators={creators}
+    >
       {children}
     </Styled.Container>
   );
@@ -20,4 +26,5 @@ FlagMessage.propTypes = {
   success: P.bool,
   icon: P.bool,
   number: P.bool,
+  creators: P.bool,
 };

@@ -15,6 +15,11 @@ html{
 }
 
 body {
-    background: #01011a;
+  background: linear-gradient(
+      30deg,
+      #0318a1 20%,
+      #020c52 50%,
+      #000524 90%
+    );
     padding: 0 1%;
   }`;
